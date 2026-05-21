@@ -1,4 +1,3 @@
 export * from "./ThemedInput";
-export * from "./Card";
+export * from "./Surface";
 export * from "./ThemedScreen";
-export * from "./ThemedButton";

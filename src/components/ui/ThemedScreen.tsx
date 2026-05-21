@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { styled, YStack } from "tamagui";
 
 export const ThemedScreen = styled(YStack, {

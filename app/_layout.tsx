@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import config from "@/tamagui.config";
 import { useSupabaseAuth } from "@/src/features/auth/hooks/useSupabaseAuth";
-import StackHeader from "@/src/components/StackHeader";
 import ThemeContextProvider from "@/src/context/ThemeContextProvider";
 
 type DefaultThemeType = keyof (typeof config)["themes"];
 
-const defaultTheme: DefaultThemeType = "light_gray";
+const defaultTheme: DefaultThemeType = "dark_red";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,6 +41,7 @@ export default function RootLayout() {
           <Stack.Screen name={"auth"} />
           <Stack.Protected guard={authenticated}>
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen name={"camera-scan"} />
           </Stack.Protected>
         </Stack>
       </TamaguiProvider>

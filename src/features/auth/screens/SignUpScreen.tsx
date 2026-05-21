@@ -1,5 +1,14 @@
-import { ThemedButton, ThemedInput, ThemedScreen } from "@/src/components/ui";
-import { Text, Input, YStack, Image, XStack, Paragraph, styled } from "tamagui";
+import { ThemedInput, ThemedScreen } from "@/src/components/ui";
+import {
+  Text,
+  Input,
+  YStack,
+  Button,
+  Image,
+  XStack,
+  Paragraph,
+  styled,
+} from "tamagui";
 import { useForm, Controller, FieldError } from "react-hook-form";
 import { SignInAnchor } from "../components/";
 import { z } from "zod";
@@ -133,7 +142,7 @@ export default function SignUpScreen() {
             />
           )}
         />
-        <ThemedButton
+        <Button
           onPress={handleSubmit(onSubmit)}
           mt={"$3"}
           rounded={"$radius.12"}
@@ -141,7 +150,7 @@ export default function SignUpScreen() {
           <Text fontSize={"$5"} fontWeight={"$6"} px={"$2"}>
             submit
           </Text>
-        </ThemedButton>
+        </Button>
         <SignInAnchor />
       </YStack>
     </ThemedScreen>
