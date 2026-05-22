@@ -1,7 +1,22 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { styled, Text, XStack, YStack } from "tamagui";
+import { GetProps, styled, Text, XStack, YStack } from "tamagui";
 import { useThemeContext } from "../context/ThemeContextProvider";
-import { TabIcons } from "@/app/(tabs)/_layout";
+import {
+  FileCheck,
+  History,
+  Component as IconComponent,
+  TrendingUp,
+  UploadCloud,
+} from "@tamagui/lucide-icons-2";
+
+type IconsProps = GetProps<typeof IconComponent>;
+
+const TabIcons = {
+  ingestion: (props: IconsProps) => <UploadCloud {...props} />,
+  verification: (props: IconsProps) => <FileCheck {...props} />,
+  analytics: (props: IconsProps) => <TrendingUp {...props} />,
+  "audit-trail": (props: IconsProps) => <History {...props} />,
+};
 
 function renderIcon(routeName: string, active: boolean = false) {
   const icon = TabIcons[routeName as keyof typeof TabIcons];
