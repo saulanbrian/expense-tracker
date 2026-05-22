@@ -10,24 +10,12 @@ type DefaultThemeType = keyof (typeof config)["themes"];
 
 const defaultTheme: DefaultThemeType = "dark_red";
 
-SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
-  const { authenticated, loading } = useSupabaseAuth();
+  const { authenticated } = useSupabaseAuth();
 
   useEffect(() => {
     NavigationBar.setVisibilityAsync("hidden");
   }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      setTimeout(() => {
-        SplashScreen.hideAsync();
-      }, 1000);
-    }
-  }, [loading]);
-
-  if (loading) return null;
 
   return (
     <ThemeContextProvider initialTheme={defaultTheme}>
@@ -38,6 +26,7 @@ export default function RootLayout() {
             animation: "ios_from_right",
           }}
         >
+          <Stack.Screen name="index" />
           <Stack.Screen name={"auth"} />
           <Stack.Protected guard={authenticated}>
             <Stack.Screen name="(tabs)" />
