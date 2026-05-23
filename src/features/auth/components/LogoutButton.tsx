@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/supabase/client";
 import { Text, YStack, YStackProps } from "tamagui";
 
 export const LogoutButton = (props: YStackProps) => {

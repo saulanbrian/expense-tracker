@@ -14,7 +14,7 @@ import { SignInAnchor } from "../components/";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/supabase/client";
 import { FormControllerInput } from "@/src/components";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -49,11 +49,9 @@ export default function SignUpScreen() {
       email: data.email,
       password: data.password,
     });
-    if (error) {
-      if (error.message.toLowerCase().includes("already registered")) {
-        setSupabaseError(error);
-      }
-    }
+    console.log(supabaseData);
+    console.log(error?.toJSON() ?? `fuckin error: ${error}`);
+    if (error) setSupabaseError(error);
   }, []);
 
   return (

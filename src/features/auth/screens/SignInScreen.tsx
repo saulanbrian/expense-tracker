@@ -13,7 +13,7 @@ import { useForm, Controller, FieldError } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpAnchor } from "@/src/features/auth/components";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/supabase/client";
 import { useCallback, useEffect, useState } from "react";
 import { AuthError } from "@supabase/supabase-js";
 import { FormControllerInput } from "@/src/components";
