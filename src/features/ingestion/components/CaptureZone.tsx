@@ -3,53 +3,51 @@ import { Camera, UploadCloud } from "@tamagui/lucide-icons-2";
 import { Button, Paragraph, Text, YStack } from "tamagui";
 import { useCallback, useState } from "react";
 import { useRouter } from "expo-router";
-import { useMediaLibraryPermissions } from "expo-image-picker";
+import UploadMediaTrigger from "@/src/components/controllers/UploadMediaTrigger";
 import { useIngestionStore } from "../stores/IngestionStore";
-import { TouchableOpacity } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
+import { getFileInfo } from "@/src/utils/media/getFileInfo";
 
 export const CaptureZone = () => {
-  const [permissions, requestPermissions] = useMediaLibraryPermissions();
-  const { setStagedFile } = useIngestionStore();
-
-  const handlePress = useCallback(async () => {
-    if (!permissions?.granted) {
-      const result = await requestPermissions();
-      if (!result.granted) {
-        return;
-      }
-    }
-    const { assets, canceled } = await DocumentPicker.getDocumentAsync({
-      type: ["application/pdf", "image/*"],
-      copyToCacheDirectory: true,
-      multiple: false,
-      base64: true,
-    });
-    if (canceled || assets.length === 0) {
-      return;
-    }
-    const file = assets[0];
-    setStagedFile({
-      uri: file.uri,
-      name: file.name,
-      type: file.mimeType === "application/pdf" ? "pdf" : "image",
-    });
-  }, [permissions]);
+  const { setDocument } = useIngestionStore();
 
   return (
     <YStack>
-      <TouchableOpacity onPress={handlePress}>
-        <Surface
-          p={"$9"}
-          borderWidth={"$1"}
-          borderStyle="dashed"
-          items={"center"}
-          justify={"center"}
-        >
-          <UploadCloud size={"$7"} />
-          <Paragraph fontSize={"$2"}>Upload invoice file</Paragraph>
-        </Surface>
-      </TouchableOpacity>
+      <UploadMediaTrigger
+        options={{ type: ["application/pdf", "image/*"], multiple: false }}
+      >
+        {(onPress) => (
+          <Surface
+            p={"$9"}
+            borderWidth={"$1"}
+            borderStyle="dashed"
+            items={"center"}
+            justify={"center"}
+            onPress={async () => {
+              const data = await onPress();
+              if (data && data.assets) {
+                const asset = data.assets[0];
+                if (!asset.size) {
+                  asset.size = getFileInfo(asset.uri).size;
+                }
+
+                setDocument({
+                  rawDocumentFile: asset,
+                  metadata: {
+                    name: asset.name,
+                    bytes_size: asset.size,
+                    uri: asset.uri,
+                    type:
+                      asset.mimeType === "application/pdf" ? "pdf" : "image",
+                  },
+                });
+              }
+            }}
+          >
+            <UploadCloud size={"$7"} />
+            <Paragraph fontSize={"$2"}>Upload invoice file</Paragraph>
+          </Surface>
+        )}
+      </UploadMediaTrigger>
       <CameraButton />
     </YStack>
   );

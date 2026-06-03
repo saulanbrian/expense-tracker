@@ -1,13 +1,14 @@
-import { useRequestCameraPermission } from "../hooks/useRequestCameraPermission";
 import { ThemedScreen } from "@/src/components";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Button, Spinner, styled, Text, YStack } from "tamagui";
 import { Camera as CameraIcon } from "@tamagui/lucide-icons-2";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIngestionStore } from "../../ingestion/stores/IngestionStore";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { use, useCallback, useRef } from "react";
 import { useRouter } from "expo-router";
 import LoadingScreen from "@/src/components/LoadingScreen";
+import CameraPermissionDeniedView from "../components/CameraPermissionDeniedView";
+import { getFileInfo } from "@/src/utils/media/getFileInfo";
 
 const SHUTTER_CONTAINER_HEIGHT = "25%";
 
@@ -17,8 +18,13 @@ export default function CameraScanScreen() {
   });
 
   if (!permissions) return <LoadingScreen />;
-  if (!permissions.granted)
-    return <NotGrantedView requestCameraPermission={requestCameraPermission} />;
+  if (permissions.granted) {
+    return (
+      <CameraPermissionDeniedView
+        requestCameraPermission={requestCameraPermission}
+      />
+    );
+  }
 
   return (
     <ThemedScreen flexCenter theme={"dark_red"} bg={"$background"}>
@@ -31,21 +37,26 @@ const MainView = () => {
   const { top } = useSafeAreaInsets();
   const ref = useRef<CameraView>(null);
   const router = useRouter();
-  const { setStagedFile } = useIngestionStore();
+  const { setDocument } = useIngestionStore();
 
   const handlePress = useCallback(async () => {
     if (ref.current) {
       const photo = await ref.current.takePictureAsync();
       if (photo) {
-        setStagedFile({
-          uri: photo.uri,
-          name: photo.uri.split("/").pop() ?? "captured-photo.jpg",
-          type: "image",
+        const { creationTime, size } = getFileInfo(photo.uri);
+        setDocument({
+          rawDocumentFile: photo,
+          metadata: {
+            name: `captured_${creationTime ?? Date.now().toString()}`,
+            bytes_size: size,
+            uri: photo.uri,
+            type: "image",
+          },
         });
+        router.back();
       }
-      router.back();
     }
-  }, []);
+  }, [router, setDocument]);
 
   return (
     <>
@@ -65,21 +76,6 @@ const MainView = () => {
         </CameraIconContainer>
       </YStack>
     </>
-  );
-};
-
-const NotGrantedView = ({
-  requestCameraPermission,
-}: {
-  requestCameraPermission: () => void;
-}) => {
-  return (
-    <YStack flex={1} justify={"center"} items={"center"} bg={"$background"}>
-      <Text mb={"$4"}>Camera permission not granted</Text>
-      <Button onPress={requestCameraPermission} rounded={"$12"}>
-        <Text>Allow permission</Text>
-      </Button>
-    </YStack>
   );
 };
 

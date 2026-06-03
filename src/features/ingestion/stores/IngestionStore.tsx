@@ -1,19 +1,23 @@
 import { create } from "zustand";
 import { IngestionFile } from "../types/IngestionFile";
 
-type IngestionState = {
-  stagedFile: IngestionFile | null;
+type IngestionStoreState = {
+  document: IngestionFile | null;
 };
 
-type IngestionActions = {
-  setStagedFile: (stagedFile: IngestionFile | null) => void;
+type IngestionStoreActions = {
+  setDocument: (document: IngestionStoreState["document"]) => void;
   clearStore: () => void;
 };
 
-type IngestionStoreType = IngestionState & IngestionActions;
+type IngestionStoreType = IngestionStoreActions & IngestionStoreState;
 
 export const useIngestionStore = create<IngestionStoreType>((set, get) => ({
-  stagedFile: null,
-  setStagedFile: (stagedFile: IngestionFile | null) => set({ stagedFile }),
-  clearStore: () => set({ stagedFile: null }),
+  document: null,
+  setDocument: (document: IngestionStoreState["document"]) => {
+    set({ document });
+  },
+  clearStore: () => {
+    set({ document: null });
+  },
 }));

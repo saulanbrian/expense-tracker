@@ -1,5 +1,12 @@
+import { CameraCapturedPicture } from "expo-camera";
+import { DocumentPickerAsset } from "expo-document-picker";
+
 export type IngestionFile = {
-  uri: string;
-  type: "pdf" | "image";
-  name: string;
+  rawDocumentFile: DocumentPickerAsset | CameraCapturedPicture;
+  metadata: {
+    name: string;
+    bytes_size: number;
+    uri: string;
+    type: "pdf" | "image";
+  };
 };
