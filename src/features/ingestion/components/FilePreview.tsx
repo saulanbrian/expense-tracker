@@ -6,18 +6,18 @@ import { IngestionFile } from "../types/IngestionFile";
 import FileSubmitButton from "./FileSubmitButton";
 
 export const FilePreview = () => {
-  const { document, setDocument } = useIngestionStore();
-  if (!document) return null;
+  const { file, setFile } = useIngestionStore();
+  if (!file) return null;
 
   return (
     <YStack gap={"$3"}>
-      <FileContainer document={document} />
+      <FileContainer file={file} />
       <YStack gap={"$2"}>
         <FileSubmitButton />
         <Button
           variant="outlined"
           rounded={"$radius.12"}
-          onPress={() => setDocument(null)}
+          onPress={() => setFile(null)}
         >
           Cancel
         </Button>
@@ -26,7 +26,7 @@ export const FilePreview = () => {
   );
 };
 
-const FileContainer = ({ document }: { document: IngestionFile }) => {
+const FileContainer = ({ file }: { file: IngestionFile }) => {
   return (
     <YStack
       rounded={"$radius.2"}
@@ -34,15 +34,15 @@ const FileContainer = ({ document }: { document: IngestionFile }) => {
       aspectRatio={9 / 12}
       overflow={"hidden"}
     >
-      {document.metadata.type === "pdf" ? (
+      {file.metadata.type === "pdf" ? (
         <PdfView
-          source={{ uri: document.metadata.uri }}
+          source={{ uri: file.metadata.uri }}
           style={{ flex: 1 }}
           page={1}
         />
       ) : (
         <StyledImage
-          source={{ uri: document.metadata.uri }}
+          source={{ uri: file.metadata.uri }}
           style={{ flex: 1 }}
         />
       )}

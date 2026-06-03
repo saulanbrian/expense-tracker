@@ -16,11 +16,11 @@ export async function uploadDocumentFile({ file, userId }: UploadProps) {
     name: fileName,
   } as any);
 
-  const documentPath = `${userId}/${fileName}`;
+  const filePath = `${userId}/${fileName}`;
 
   const data = await supabase.storage
     .from("documents")
-    .upload(documentPath, formData);
+    .upload(filePath, formData);
 
   return data;
 }

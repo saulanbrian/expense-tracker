@@ -8,7 +8,7 @@ import { useIngestionStore } from "../stores/IngestionStore";
 import { getFileInfo } from "@/src/utils/media/getFileInfo";
 
 export const CaptureZone = () => {
-  const { setDocument } = useIngestionStore();
+  const { setFile } = useIngestionStore();
 
   return (
     <YStack>
@@ -30,8 +30,8 @@ export const CaptureZone = () => {
                   asset.size = getFileInfo(asset.uri).size;
                 }
 
-                setDocument({
-                  rawDocumentFile: asset,
+                setFile({
+                  rawFile: asset,
                   metadata: {
                     name: asset.name,
                     bytes_size: asset.size,

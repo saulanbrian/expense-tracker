@@ -2,7 +2,7 @@ import { CameraCapturedPicture } from "expo-camera";
 import { DocumentPickerAsset } from "expo-document-picker";
 
 export type IngestionFile = {
-  rawDocumentFile: DocumentPickerAsset | CameraCapturedPicture;
+  rawFile: DocumentPickerAsset | CameraCapturedPicture;
   metadata: {
     name: string;
     bytes_size: number;

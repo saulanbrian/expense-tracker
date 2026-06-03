@@ -4,11 +4,11 @@ import { useIngestionStore } from "../stores/IngestionStore";
 import { FilePreview } from "@/src/features/ingestion/components/FilePreview";
 
 export default function IngestionScreen() {
-  const { document } = useIngestionStore();
+  const { file } = useIngestionStore();
 
   return (
     <ThemedScreen flexCenter>
-      {document ? <FilePreview /> : <CaptureZone />}
+      {file ? <FilePreview /> : <CaptureZone />}
     </ThemedScreen>
   );
 }

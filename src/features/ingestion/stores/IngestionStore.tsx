@@ -2,22 +2,22 @@ import { create } from "zustand";
 import { IngestionFile } from "../types/IngestionFile";
 
 type IngestionStoreState = {
-  document: IngestionFile | null;
+  file: IngestionFile | null;
 };
 
 type IngestionStoreActions = {
-  setDocument: (document: IngestionStoreState["document"]) => void;
+  setFile: (file: IngestionStoreState["file"]) => void;
   clearStore: () => void;
 };
 
 type IngestionStoreType = IngestionStoreActions & IngestionStoreState;
 
 export const useIngestionStore = create<IngestionStoreType>((set, get) => ({
-  document: null,
-  setDocument: (document: IngestionStoreState["document"]) => {
-    set({ document });
+  file: null,
+  setFile: (file: IngestionStoreState["file"]) => {
+    set({ file });
   },
   clearStore: () => {
-    set({ document: null });
+    set({ file: null });
   },
 }));

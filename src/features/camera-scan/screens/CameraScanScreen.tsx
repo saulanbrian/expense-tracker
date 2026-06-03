@@ -18,7 +18,7 @@ export default function CameraScanScreen() {
   });
 
   if (!permissions) return <LoadingScreen />;
-  if (permissions.granted) {
+  if (!permissions.granted) {
     return (
       <CameraPermissionDeniedView
         requestCameraPermission={requestCameraPermission}
@@ -37,15 +37,15 @@ const MainView = () => {
   const { top } = useSafeAreaInsets();
   const ref = useRef<CameraView>(null);
   const router = useRouter();
-  const { setDocument } = useIngestionStore();
+  const { setFile } = useIngestionStore();
 
   const handlePress = useCallback(async () => {
     if (ref.current) {
       const photo = await ref.current.takePictureAsync();
       if (photo) {
         const { creationTime, size } = getFileInfo(photo.uri);
-        setDocument({
-          rawDocumentFile: photo,
+        setFile({
+          rawFile: photo,
           metadata: {
             name: `captured_${creationTime ?? Date.now().toString()}`,
             bytes_size: size,
@@ -56,7 +56,7 @@ const MainView = () => {
         router.back();
       }
     }
-  }, [router, setDocument]);
+  }, [router, setFile]);
 
   return (
     <>

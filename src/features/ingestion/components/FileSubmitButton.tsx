@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import ActionButton from "@/src/components/ui/ActionButton";
 
 export default function FileSubmitButton() {
-  const { document, setDocument } = useIngestionStore();
+  const { file, setFile } = useIngestionStore();
   const { profile, loading: loadingProfile } = useProfile();
   const { mutate: submit, status } = useMutation({
     mutationFn: async () => {
@@ -18,21 +18,21 @@ export default function FileSubmitButton() {
       return data;
     },
     onSuccess: () => {
-      setDocument(null);
+      setFile(null);
     },
   });
 
   const hanldeSubmit = useCallback(async () => {
-    if (!document || !profile)
+    if (!file || !profile)
       return {
-        error: "cannot retrieve document or profile",
+        error: "cannot retrieve file or profile",
         data: null,
       };
 
-    const fileInfo = document.metadata;
+    const fileInfo = file.metadata;
 
     const { data: uploadData, error: uploadError } = await uploadDocumentFile({
-      file: document,
+      file: file,
       userId: profile.id,
     });
 
@@ -48,12 +48,12 @@ export default function FileSubmitButton() {
       return { data, error };
     }
     return { data: uploadData, error: uploadError };
-  }, [document, loadingProfile, profile, setDocument]);
+  }, [file, loadingProfile, profile, setFile]);
 
   return (
     <ActionButton
       theme={"accent"}
-      disabled={!document || status === "pending"}
+      disabled={!file || status === "pending"}
       rounded={"$radius.12"}
       onPress={() => submit()}
       state={status}
