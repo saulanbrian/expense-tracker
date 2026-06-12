@@ -10,17 +10,17 @@ export const useProfile = () => {
 
   useEffect(() => {
     const getProfile = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) return;
-      const { data } = await supabase
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) return;
+
+      const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", session.user.id)
+        .eq("id", data.session.user.id)
         .single();
-      if (data) {
-        setProfile(data);
+
+      if (profileData) {
+        setProfile(profileData);
         setLoading(false);
       }
     };

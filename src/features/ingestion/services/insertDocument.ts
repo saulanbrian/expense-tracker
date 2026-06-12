@@ -7,7 +7,8 @@ export async function insertDocument(
   const { data, error } = await supabase
     .from("documents")
     .insert(document)
-    .select("*");
+    .select("*")
+    .single();
 
   return { data, error };
 }

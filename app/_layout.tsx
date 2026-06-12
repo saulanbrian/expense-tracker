@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 
 type DefaultThemeType = keyof (typeof config)["themes"];
 
-const defaultTheme: DefaultThemeType = "dark_red";
+const defaultTheme: DefaultThemeType = "dark_gray";
 
 export default function RootLayout() {
   const { authenticated } = useSupabaseAuth();

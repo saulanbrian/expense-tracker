@@ -5,9 +5,8 @@ import { useIngestionStore } from "../stores/IngestionStore";
 import { IngestionFile } from "../types/IngestionFile";
 import FileSubmitButton from "./FileSubmitButton";
 
-export const FilePreview = () => {
-  const { file, setFile } = useIngestionStore();
-  if (!file) return null;
+export const FilePreview = ({ file }: { file: IngestionFile }) => {
+  const { setFile } = useIngestionStore();
 
   return (
     <YStack gap={"$3"}>
@@ -41,10 +40,7 @@ const FileContainer = ({ file }: { file: IngestionFile }) => {
           page={1}
         />
       ) : (
-        <StyledImage
-          source={{ uri: file.metadata.uri }}
-          style={{ flex: 1 }}
-        />
+        <StyledImage source={{ uri: file.metadata.uri }} style={{ flex: 1 }} />
       )}
     </YStack>
   );

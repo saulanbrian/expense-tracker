@@ -1,61 +1,29 @@
-import { useIngestionStore } from "../stores/IngestionStore";
-import { useCallback } from "react";
-import { useProfile } from "../../auth/hooks/useUser";
-import { uploadDocumentFile } from "../services/uploadDocumentFile";
-import { insertDocument } from "../services/insertDocument";
-import { useMutation } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo } from "react";
 import ActionButton from "@/src/components/ui/ActionButton";
+import { useProfile } from "../../auth/hooks/useProfile";
+import useStartIngestion from "../hooks/useStartIngestion";
+import { useIngestionStore } from "../stores/IngestionStore";
 
 export default function FileSubmitButton() {
-  const { file, setFile } = useIngestionStore();
-  const { profile, loading: loadingProfile } = useProfile();
-  const { mutate: submit, status } = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await hanldeSubmit();
-      if (error) {
-        throw new Error(error.toString());
-      }
-      return data;
-    },
-    onSuccess: () => {
-      setFile(null);
-    },
-  });
+  const { mutate, status } = useStartIngestion();
+  const { file } = useIngestionStore();
+  const { profile } = useProfile();
 
-  const hanldeSubmit = useCallback(async () => {
-    if (!file || !profile)
-      return {
-        error: "cannot retrieve file or profile",
-        data: null,
-      };
-
-    const fileInfo = file.metadata;
-
-    const { data: uploadData, error: uploadError } = await uploadDocumentFile({
-      file: file,
-      userId: profile.id,
+  const handleSubmit = useCallback(async () => {
+    if (!profile || !file) return;
+    mutate({
+      profileId: profile.id,
+      organizationId: profile.organization_id!,
+      file,
     });
-
-    if (uploadData) {
-      const { data, error } = await insertDocument({
-        file_name: fileInfo.name,
-        file_size_bytes: fileInfo.bytes_size,
-        file_type: fileInfo.type == "pdf" ? "application/pdf" : "image/jpeg",
-        organization_id: profile.organization_id!,
-        storage_path: uploadData.path,
-        uploaded_by: profile.id,
-      });
-      return { data, error };
-    }
-    return { data: uploadData, error: uploadError };
-  }, [file, loadingProfile, profile, setFile]);
+  }, [profile, mutate, file]);
 
   return (
     <ActionButton
       theme={"accent"}
-      disabled={!file || status === "pending"}
+      disabled={status === "pending"}
       rounded={"$radius.12"}
-      onPress={() => submit()}
+      onPress={handleSubmit}
       state={status}
     >
       Submit
