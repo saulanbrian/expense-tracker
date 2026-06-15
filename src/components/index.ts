@@ -1,6 +1,7 @@
 export * from "./FormControllerInput";
 export * from "./ui";
-export * from "./TabHeader";
-export * from "./StackHeader";
+export { default as TabHeader } from "./TabHeader";
+export { default as StackHeader } from "./StackHeader";
 export * from "./HeaderBase";
-export * from "./LoadingScreen";
+export { default as LoadingScreen } from "./LoadingScreen";
+export { default as DocumentVerificationCard } from "./DocumentVerificationCard";

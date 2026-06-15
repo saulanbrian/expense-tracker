@@ -1,4 +1,4 @@
-import { Text, XStack, YStack, Spinner } from "tamagui";
+import { Text, XStack, YStack, Spinner, Button } from "tamagui";
 import {
   StageStatus,
   useIngestionStore,
@@ -8,8 +8,11 @@ import {
   CheckCircle2,
   Circle as CircleIcon,
   AlertCircle,
+  ArrowRight,
 } from "@tamagui/lucide-icons-2";
 import { Surface } from "@/src/components/ui/Surface";
+import { useRouter } from "expo-router";
+import { useCallback } from "react";
 
 const STAGE_LABELS: Record<PipelineStage, string> = {
   [PipelineStage.Retrieving]: "Initializing Pipeline",
@@ -95,7 +98,13 @@ const Step = ({
 };
 
 export const ProgressContainer = () => {
-  const { pipelineStage, disconnectFromSocket } = useIngestionStore();
+  const { pipelineStage, clearStore } = useIngestionStore();
+  const router = useRouter();
+
+  const handleVerify = useCallback(() => {
+    clearStore();
+    router.push("/verification");
+  }, [clearStore, router]);
 
   const stages = Object.keys(pipelineStage) as PipelineStage[];
 
@@ -134,6 +143,23 @@ export const ProgressContainer = () => {
           ))}
         </YStack>
       </YStack>
+      <Button
+        iconAfter={ArrowRight}
+        rounded={"$radius.12"}
+        my={"$4"}
+        theme={"accent"}
+        items="center"
+        px={"$3"}
+        onPress={handleVerify}
+      >
+        <Button.Text
+          textAlignVertical="center"
+          fontSize={"$4"}
+          fontWeight={"700"}
+        >
+          Verify
+        </Button.Text>
+      </Button>
     </YStack>
   );
 };

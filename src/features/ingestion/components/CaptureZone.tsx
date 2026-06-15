@@ -16,9 +16,11 @@ export const CaptureZone = () => {
         options={{ type: ["application/pdf", "image/*"], multiple: false }}
       >
         {(onPress) => (
-          <Surface
+          <YStack
             p={"$9"}
+            mb={"$2"}
             borderWidth={"$1"}
+            borderColor={"$color7"}
             borderStyle="dashed"
             items={"center"}
             justify={"center"}
@@ -43,9 +45,11 @@ export const CaptureZone = () => {
               }
             }}
           >
-            <UploadCloud size={"$7"} />
-            <Paragraph fontSize={"$2"}>Upload invoice file</Paragraph>
-          </Surface>
+            <UploadCloud size={"$7"} color={"$accent7"} />
+            <Paragraph fontSize={"$2"} color={"$accent7"}>
+              Upload invoice file
+            </Paragraph>
+          </YStack>
         )}
       </UploadMediaTrigger>
       <CameraButton />

@@ -1,4 +1,4 @@
 export * from "./ThemedInput";
 export * from "./Surface";
 export * from "./ThemedScreen";
-export * from "./ActionButton";
+export { default as ActionButton } from "./ActionButton";

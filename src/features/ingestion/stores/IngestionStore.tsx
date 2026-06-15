@@ -44,6 +44,7 @@ type IngestionStoreType = StoreValues & {
   setFile: (file: IngestionFile | null) => void;
   setCurrentTaskId: (id: string) => void;
   connectToSocket: () => void;
+  clearStore: () => void;
   disconnectFromSocket: () => void;
   updatePipelineStage: (
     processName: PipelineStage,
@@ -102,6 +103,9 @@ export const useIngestionStore = create<IngestionStoreType>(
       };
 
       set({ socket });
+    },
+    clearStore: () => {
+      set({ ...defaultValues(set, get, store) });
     },
     disconnectFromSocket: () => {
       if (get().socket) {

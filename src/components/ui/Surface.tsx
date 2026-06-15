@@ -5,6 +5,7 @@ import config from "@/tamagui.config";
 const StyledYStack = styled(YStack, {
   p: "$4",
   borderWidth: "$1",
+  bg: "$color3",
   borderColor: "$borderColor",
   m: "$2",
   variants: {
