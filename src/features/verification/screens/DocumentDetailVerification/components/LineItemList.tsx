@@ -5,7 +5,6 @@ import { Trash2 } from "@tamagui/lucide-icons-2";
 import { ThemedInput } from "@/src/components/ui";
 import { DocumentLineItem } from "@/src/db/types";
 
-// Local Subcomponent (Internal)
 function LineItemRow({
   item,
   onUpdate,
@@ -110,11 +109,12 @@ export interface LineItemListHandle {
 
 interface LineItemListProps {
   initialItems: DocumentLineItem[];
+  page?: number;
 }
 
 // Export only the main component
 export const LineItemList = forwardRef<LineItemListHandle, LineItemListProps>(
-  ({ initialItems }, ref) => {
+  ({ initialItems, page = 1 }, ref) => {
     const [items, setItems] = useState(initialItems);
     const [updatedItemsIds, setUpdatedItemsIds] = useState<string[]>([]);
     const [removedIds, setRemovedIds] = useState<string[]>([]);
@@ -144,14 +144,16 @@ export const LineItemList = forwardRef<LineItemListHandle, LineItemListProps>(
 
     return (
       <YStack gap="$3">
-        {items.map((item) => (
-          <LineItemRow
-            key={item.id}
-            item={item}
-            onUpdate={(updates) => updateLineItem(item.id, updates)}
-            onDelete={() => deleteLineItem(item.id)}
-          />
-        ))}
+        {items
+          .filter((item) => item.page_number === page)
+          .map((item) => (
+            <LineItemRow
+              key={item.id}
+              item={item}
+              onUpdate={(updates) => updateLineItem(item.id, updates)}
+              onDelete={() => deleteLineItem(item.id)}
+            />
+          ))}
       </YStack>
     );
   },

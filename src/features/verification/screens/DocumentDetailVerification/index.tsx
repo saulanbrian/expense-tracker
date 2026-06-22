@@ -1,6 +1,6 @@
 import { ThemedScreen, LoadingScreen, StackHeader } from "@/src/components";
 import { useLocalSearchParams, Stack, useRouter } from "expo-router";
-import { Suspense, useCallback, useRef } from "react";
+import { Suspense, useCallback, useRef, useState } from "react";
 import { useGetDocument } from "@/src/db/queries/documents";
 import { ActionButton } from "@/src/components";
 import { YStack, ScrollView, View, Text, XStack } from "tamagui";
@@ -10,6 +10,7 @@ import { HeaderFields, HeaderFieldsHandle } from "./components/HeaderFields";
 import { LineItemList, LineItemListHandle } from "./components/LineItemList";
 import { DocumentLineItem } from "@/src/db/types";
 import { useVerifyDocument } from "../../hooks/useVerifyDocument";
+import PagedPdfPreview from "@/src/components/PagedPdfPreview";
 
 export default function DocumentDetailVerificationScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -29,10 +30,7 @@ function DocumentDetail({ id }: { id: string }) {
   const headerRef = useRef<HeaderFieldsHandle>(null);
   const lineItemsRef = useRef<LineItemListHandle>(null);
   const { mutate, isPending, status } = useVerifyDocument();
-
-  if (!data) return <Text>Document not found</Text>;
-
-  const { document_line_items, ...document } = data;
+  const [previewPage, setPreviewPage] = useState(1);
 
   const handleSave = useCallback(() => {
     if (!headerRef.current || !lineItemsRef.current) {
@@ -51,7 +49,11 @@ function DocumentDetail({ id }: { id: string }) {
         lineItemChanges.updatedItemIds.includes(item.id),
       ),
     });
-  }, [id, mutate, router]);
+  }, [id, mutate]);
+
+  if (!data) return <Text>Document not found</Text>;
+
+  const { document_line_items, ...document } = data;
 
   return (
     <View flex={1}>
@@ -71,7 +73,7 @@ function DocumentDetail({ id }: { id: string }) {
           <YStack>
             <SectionHeader title="Document Source" icon={FileText} />
             <View
-              height={280}
+              height={400}
               width="100%"
               rounded="$3"
               borderWidth={0.5}
@@ -81,23 +83,21 @@ function DocumentDetail({ id }: { id: string }) {
               justify="center"
               overflow="hidden"
             >
-              <View p="$4" items="center" gap="$2">
-                <FileText size={40} color="$color8" />
-                <Text color="$color11" fontWeight="600" text="center">
-                  Preview Placeholder
-                </Text>
-                <Text color="$color9" fontSize="$1" text="center" px="$4">
-                  {document.storage_path}
-                </Text>
-              </View>
+              <PagedPdfPreview
+                uri={document.storage_path}
+                flex={1}
+                onPageChange={setPreviewPage}
+                style={{ width: "100%", height: "100%" }}
+              />
             </View>
           </YStack>
 
           <YStack gap="$3">
             <XStack justify="space-between" items="center" px="$1">
-              <SectionHeader title="Line Items" />
+              <SectionHeader title="Line Items on this page" />
             </XStack>
             <LineItemList
+              page={previewPage}
               ref={lineItemsRef}
               initialItems={(document_line_items as DocumentLineItem[]) || []}
             />

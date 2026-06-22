@@ -16,31 +16,37 @@ export type Database = {
     Tables: {
       document_line_items: {
         Row: {
+          bounding_box: number[]
           created_at: string | null
           description: string
           document_id: string
           gl_code: string | null
           id: string
+          page_number: number
           quantity: number | null
           total_price: number
           unit_price: number | null
         }
         Insert: {
+          bounding_box?: number[]
           created_at?: string | null
           description: string
           document_id: string
           gl_code?: string | null
           id?: string
+          page_number?: number
           quantity?: number | null
           total_price: number
           unit_price?: number | null
         }
         Update: {
+          bounding_box?: number[]
           created_at?: string | null
           description?: string
           document_id?: string
           gl_code?: string | null
           id?: string
+          page_number?: number
           quantity?: number | null
           total_price?: number
           unit_price?: number | null
