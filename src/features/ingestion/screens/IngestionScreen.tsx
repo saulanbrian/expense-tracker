@@ -1,8 +1,8 @@
-import { ThemedScreen } from "@/src/components";
-import { CaptureZone } from "@/src/features/ingestion/components/CaptureZone";
+import { ThemedScreen } from "@/src/components/ui";
+import { CaptureZone } from "./IngestionScreen/components/CaptureZone";
 import { useIngestionStore } from "../stores/IngestionStore";
-import { FilePreview } from "@/src/features/ingestion/components/FilePreview";
-import { ProgressContainer } from "../components/ProgressContainer";
+import { FilePreview } from "./IngestionScreen/components/FilePreview";
+import { ProgressContainer } from "./IngestionScreen/components/ProgressContainer";
 
 export default function IngestionScreen() {
   const { file, pipelineStarted } = useIngestionStore();

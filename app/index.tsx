@@ -1,4 +1,4 @@
-import LoadingScreen from "@/src/components/LoadingScreen";
+import { LoadingScreen } from "@/src/components/ui";
 import { useSupabaseAuth } from "@/src/features/auth/hooks/useSupabaseAuth";
 import { Redirect } from "expo-router";
 

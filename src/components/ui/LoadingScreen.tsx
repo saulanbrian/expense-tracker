@@ -1,4 +1,4 @@
-import { ThemedScreen } from "./ui";
+import { ThemedScreen } from "./ThemedScreen";
 import { Spinner } from "tamagui";
 
 export default function LoadingScreen() {

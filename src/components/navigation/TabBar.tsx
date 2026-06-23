@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { GetProps, styled, Text, XStack, YStack } from "tamagui";
-import { useThemeContext } from "../context/ThemeContextProvider";
+import { GetProps, Text, XStack, YStack } from "tamagui";
+import { useThemeContext } from "@/src/context/ThemeContextProvider";
 import {
   FileCheck,
   History,

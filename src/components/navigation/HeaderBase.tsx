@@ -1,5 +1,5 @@
+import { useThemeContext } from "@/src/context/ThemeContextProvider";
 import { styled, Text, YStack, YStackProps } from "tamagui";
-import { useThemeContext } from "../context/ThemeContextProvider";
 
 export const HeaderBase = (props: YStackProps) => {
   const { theme } = useThemeContext();

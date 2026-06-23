@@ -1,7 +1,7 @@
 import { getDefaultHeaderHeight } from "@react-navigation/elements";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useWindowDimensions, YStack, Text, XStack, Button } from "tamagui";
+import { useWindowDimensions, XStack, Button } from "tamagui";
 import { HeaderBase, HeaderBaseText } from "./HeaderBase";
 import { ArrowLeft } from "@tamagui/lucide-icons-2";
 import { useRouter } from "expo-router";

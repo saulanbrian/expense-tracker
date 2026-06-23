@@ -5,9 +5,8 @@ import { mapInfiniteQueryResult } from "@/src/db/utils/mapInfiniteQueryResult";
 import { Document, DocumentLineItem } from "@/src/db/types";
 import { DocumentWithItems } from "@/src/components/DocumentVerificationCard/context";
 import { Suspense } from "react";
-import LoadingScreen from "@/src/components/LoadingScreen";
+import { LoadingScreen, ThemedScreen } from "@/src/components/ui";
 import { useRouter } from "expo-router";
-import { ThemedScreen } from "@/src/components";
 
 export default function VerificationInitialScreen() {
   return (

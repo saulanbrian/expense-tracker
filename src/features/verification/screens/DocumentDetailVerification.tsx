@@ -1,4 +1,4 @@
-import { ThemedScreen, LoadingScreen } from "@/src/components";
+import { LoadingScreen, ThemedScreen } from "@/src/components/ui";
 import { useLocalSearchParams } from "expo-router";
 import { Suspense, useCallback, useRef } from "react";
 import { useGetDocument } from "@/src/db/queries/documents";

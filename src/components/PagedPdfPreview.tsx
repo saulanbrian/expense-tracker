@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Pdf, { PdfRef } from "react-native-pdf";
 import { Button, Text, View, XStack, YStack, YStackProps } from "tamagui";
 import { ChevronLeft, ChevronRight } from "@tamagui/lucide-icons-2";
-import LoadingScreen from "./LoadingScreen";
+import { LoadingScreen } from "@/src/components/ui";
 import { useFetchPdfBlob } from "../hooks/useFetchPdfBlob";
 
 type PdfPreviewProps = YStackProps & {

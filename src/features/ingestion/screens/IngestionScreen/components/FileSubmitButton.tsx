@@ -1,8 +1,8 @@
-import { useCallback } from "react";
 import ActionButton from "@/src/components/ui/ActionButton";
-import { useProfile } from "../../auth/hooks/useProfile";
-import useStartIngestion from "../hooks/useStartIngestion";
-import { useIngestionStore } from "../stores/IngestionStore";
+import { useCallback } from "react";
+import { useProfile } from "@/src/features/auth/hooks/useProfile";
+import useStartIngestion from "@/src/features/ingestion/hooks/useStartIngestion";
+import { useIngestionStore } from "@/src/features/ingestion/stores/IngestionStore";
 
 export default function FileSubmitButton() {
   const { mutate, status } = useStartIngestion();

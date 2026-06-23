@@ -1,21 +1,18 @@
-import { ThemedInput, ThemedScreen } from "@/src/components/ui";
+import { FormControllerInput, ThemedScreen } from "@/src/components/ui";
 import {
   Text,
-  Input,
   YStack,
   Button,
   Image,
-  XStack,
   Paragraph,
   styled,
 } from "tamagui";
-import { useForm, Controller, FieldError } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { SignInAnchor } from "../components/";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { supabase } from "@/supabase/client";
-import { FormControllerInput } from "@/src/components";
 import { AuthError } from "@supabase/supabase-js";
 
 const SignUpSchema = z
@@ -34,7 +31,7 @@ const SignUpSchema = z
 type SignUpFields = z.infer<typeof SignUpSchema>;
 
 export default function SignUpScreen() {
-  const { control, handleSubmit, setError, formState } = useForm<SignUpFields>({
+  const { control, handleSubmit } = useForm<SignUpFields>({
     defaultValues: {
       email: "",
       password: "",

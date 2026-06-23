@@ -1,7 +1,7 @@
 import { useSupabaseAuth } from "@/src/features/auth/hooks/useSupabaseAuth";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import StackHeader from "@/src/components/StackHeader";
+import { StackHeader } from "@/src/components/navigation";
 
 export default function AuthLayout() {
   const { authenticated } = useSupabaseAuth();
@@ -11,7 +11,7 @@ export default function AuthLayout() {
     if (authenticated) {
       router.replace("/(tabs)/ingestion");
     }
-  }, [authenticated]);
+  }, [authenticated, router]);
 
   return (
     <Stack>

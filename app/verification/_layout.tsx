@@ -1,4 +1,4 @@
-import StackHeader from "@/src/components/StackHeader";
+import { StackHeader } from "@/src/components/navigation";
 import { Stack } from "expo-router";
 
 export default function VerificationLayout() {

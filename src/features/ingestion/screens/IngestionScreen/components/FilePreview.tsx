@@ -1,8 +1,8 @@
-import { styled, YStack, Text, Button } from "tamagui";
+import { styled, YStack, Button } from "tamagui";
 import { Image } from "expo-image";
 import PdfView from "react-native-pdf";
-import { useIngestionStore } from "../stores/IngestionStore";
-import { IngestionFile } from "../types/IngestionFile";
+import { useIngestionStore } from "../../../stores/IngestionStore";
+import { IngestionFile } from "../../../types/IngestionFile";
 import FileSubmitButton from "./FileSubmitButton";
 
 export const FilePreview = ({ file }: { file: IngestionFile }) => {

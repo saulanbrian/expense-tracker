@@ -1,4 +1,4 @@
-import { ThemedScreen } from "@/src/components";
+import { ThemedScreen } from "@/src/components/ui";
 import { Button, Text } from "tamagui";
 
 export default function CameraPermissionDeniedView({

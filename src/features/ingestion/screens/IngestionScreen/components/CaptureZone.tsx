@@ -3,7 +3,7 @@ import { Button, Paragraph, Text, YStack } from "tamagui";
 import { useCallback } from "react";
 import { useRouter } from "expo-router";
 import UploadMediaTrigger from "@/src/components/controllers/UploadMediaTrigger";
-import { useIngestionStore } from "../stores/IngestionStore";
+import { useIngestionStore } from "../../../stores/IngestionStore";
 import { getFileInfo } from "@/src/utils/media/getFileInfo";
 
 export const CaptureZone = () => {
@@ -61,7 +61,7 @@ const CameraButton = () => {
 
   const handlePress = useCallback(() => {
     router.push("/camera-scan");
-  }, []);
+  }, [router]);
 
   return (
     <Button icon={() => <Camera size={"$1"} />} onPress={handlePress}>

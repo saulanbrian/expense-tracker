@@ -1,6 +1,6 @@
 import { FieldError } from "react-hook-form";
-import { ThemedInput } from "./ui";
-import { YStack, Text, GetProps, Input } from "tamagui";
+import { ThemedInput } from "./ThemedInput";
+import { YStack, Text, GetProps } from "tamagui";
 
 type FormControllerInputProps = Omit<GetProps<typeof ThemedInput>, "error"> & {
   name: string;

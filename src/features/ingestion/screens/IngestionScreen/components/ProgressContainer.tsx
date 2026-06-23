@@ -3,14 +3,13 @@ import {
   StageStatus,
   useIngestionStore,
   PipelineStage,
-} from "../stores/IngestionStore";
+} from "../../../stores/IngestionStore";
 import {
   CheckCircle2,
   Circle as CircleIcon,
   AlertCircle,
   ArrowRight,
 } from "@tamagui/lucide-icons-2";
-import { Surface } from "@/src/components/ui/Surface";
 import { useRouter } from "expo-router";
 import { useCallback } from "react";
 

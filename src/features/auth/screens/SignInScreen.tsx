@@ -1,22 +1,19 @@
-import { ThemedInput, ThemedScreen } from "@/src/components/ui";
+import { FormControllerInput, ThemedScreen } from "@/src/components/ui";
 import {
   Text,
-  Input,
   YStack,
   Image,
-  XStack,
   Paragraph,
   styled,
   Button,
 } from "tamagui";
-import { useForm, Controller, FieldError } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpAnchor } from "@/src/features/auth/components";
 import { supabase } from "@/supabase/client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { AuthError } from "@supabase/supabase-js";
-import { FormControllerInput } from "@/src/components";
 
 const SignInSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -46,7 +43,7 @@ export default function SignInScreen() {
         setSupabaseError(error);
       }
     },
-    [supabase],
+    [],
   );
 
   return (

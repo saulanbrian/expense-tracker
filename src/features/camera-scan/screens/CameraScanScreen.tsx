@@ -1,12 +1,11 @@
-import { ThemedScreen } from "@/src/components";
+import { LoadingScreen, ThemedScreen } from "@/src/components/ui";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { Button, Spinner, styled, Text, YStack } from "tamagui";
+import { styled, YStack } from "tamagui";
 import { Camera as CameraIcon } from "@tamagui/lucide-icons-2";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIngestionStore } from "../../ingestion/stores/IngestionStore";
-import { use, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useRouter } from "expo-router";
-import LoadingScreen from "@/src/components/LoadingScreen";
 import CameraPermissionDeniedView from "../components/CameraPermissionDeniedView";
 import { getFileInfo } from "@/src/utils/media/getFileInfo";
 
