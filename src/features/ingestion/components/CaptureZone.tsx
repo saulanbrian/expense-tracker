@@ -1,7 +1,6 @@
-import { Surface } from "@/src/components";
 import { Camera, UploadCloud } from "@tamagui/lucide-icons-2";
 import { Button, Paragraph, Text, YStack } from "tamagui";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useRouter } from "expo-router";
 import UploadMediaTrigger from "@/src/components/controllers/UploadMediaTrigger";
 import { useIngestionStore } from "../stores/IngestionStore";

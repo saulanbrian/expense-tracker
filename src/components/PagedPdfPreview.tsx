@@ -16,31 +16,37 @@ export default function PagedPdfPreview({
   ...props
 }: PdfPreviewProps) {
   const { blobPath, loading } = useFetchPdfBlob(uri);
-  const pdfRef = useRef<PdfRef>(null);
   const [numberOfPages, setNumberOfPages] = useState(1);
   const [page, setPage] = useState(1);
-  const currentPageRef = useRef(1);
+  const pdfRef = useRef<PdfRef>(null);
 
-  // Reset page state to 1 when the file changes
+  const source = useMemo(() => ({ uri: blobPath, cache: true }), [blobPath]);
+
+  const pageIncrement = useCallback(() => {
+    if (pdfRef.current && numberOfPages > page) {
+      setPage(page + 1);
+      pdfRef.current?.setPage(page + 1);
+    }
+  }, [numberOfPages, page]);
+
+  const pageDecrement = useCallback(() => {
+    if (pdfRef.current && page > 1) {
+      setPage(page - 1);
+      pdfRef.current?.setPage(page - 1);
+    }
+  }, [page]);
+
   useEffect(() => {
-    currentPageRef.current = 1;
     setPage(1);
   }, [blobPath]);
 
-  // Memoize source object to avoid recreations on re-render which can cause native crashes
-  const source = useMemo(() => ({ uri: blobPath, cache: true }), [blobPath]);
+  useEffect(() => {
+    let timeoutId = setTimeout(() => {
+      pdfRef.current?.setPage(3);
+    }, 1000);
 
-  const handlePageChange = useCallback(
-    (newPage: number) => {
-      if (pdfRef.current && newPage !== currentPageRef.current) {
-        currentPageRef.current = newPage;
-        setPage(newPage);
-        onPageChange?.(newPage);
-        pdfRef.current.setPage(newPage);
-      }
-    },
-    [onPageChange],
-  );
+    return clearTimeout(timeoutId);
+  }, []);
 
   if (loading) {
     return <LoadingScreen />;
@@ -56,28 +62,18 @@ export default function PagedPdfPreview({
     >
       <View flex={1} width="100%" height="100%">
         <Pdf
-          key={blobPath} // Remount PDF component only if the underlying file changes
-          source={source}
+          key={blobPath}
           ref={pdfRef}
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "transparent",
-          }}
+          source={source}
+          scrollEnabled={false}
+          style={{ flex: 1, width: "100%", height: "100%" }}
           horizontal={true}
           enablePaging={true}
-          fitPolicy={2}
+          fitPolicy={0}
           enableAntialiasing={true}
           onLoadComplete={(numPages) => setNumberOfPages(numPages || 1)}
-          onPageChanged={(p) => {
-            if (p !== currentPageRef.current) {
-              currentPageRef.current = p;
-              setPage(p);
-              onPageChange?.(p);
-            }
-          }}
           onError={(error) => console.error("Pdf preview error:", error)}
+          onPageChanged={onPageChange}
           minScale={1.0}
           maxScale={4.0}
         />
@@ -110,7 +106,7 @@ export default function PagedPdfPreview({
             circular
             chromeless
             disabled={page <= 1}
-            onPress={() => handlePageChange(Math.max(1, page - 1))}
+            onPress={pageDecrement}
             pressStyle={{ opacity: 0.5 }}
           />
 
@@ -128,7 +124,7 @@ export default function PagedPdfPreview({
             circular
             chromeless
             disabled={page >= numberOfPages}
-            onPress={() => handlePageChange(Math.min(numberOfPages, page + 1))}
+            onPress={pageIncrement}
             pressStyle={{ opacity: 0.5 }}
           />
         </XStack>

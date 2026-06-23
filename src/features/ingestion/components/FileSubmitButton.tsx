@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback } from "react";
 import ActionButton from "@/src/components/ui/ActionButton";
 import { useProfile } from "../../auth/hooks/useProfile";
 import useStartIngestion from "../hooks/useStartIngestion";
@@ -11,6 +11,7 @@ export default function FileSubmitButton() {
 
   const handleSubmit = useCallback(async () => {
     if (!profile || !file) return;
+    console.log("pressed");
     mutate({
       profileId: profile.id,
       organizationId: profile.organization_id!,

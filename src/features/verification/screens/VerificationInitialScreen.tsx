@@ -36,7 +36,7 @@ const UnverfiedDocuments = () => {
           <DocumentVerificationCard
             document={documentWithItems}
             onAction={(document) => {
-              router.push(`/verification/${document.id}`);
+              router.push(`/verification/${item.id}`);
             }}
           />
         );

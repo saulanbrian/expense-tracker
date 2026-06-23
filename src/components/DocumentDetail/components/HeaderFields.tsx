@@ -9,11 +9,13 @@ function HeaderField({
   value,
   onChange,
   isLarge = false,
+  mode,
 }: {
   label: string;
   value: string;
   onChange: (val: string) => void;
   isLarge?: boolean;
+  mode: "edit" | "readonly";
 }) {
   const [isEditing, setIsEditing] = useState(false);
   return (
@@ -28,7 +30,7 @@ function HeaderField({
         {label}
       </Text>
       <XStack gap="$2" items="center" justify="space-between">
-        {isEditing ? (
+        {isEditing && mode === "edit" ? (
           <ThemedInput
             value={value}
             onChangeText={onChange}
@@ -46,19 +48,21 @@ function HeaderField({
             flex={1}
             numberOfLines={1}
           >
-            {value || `Enter ${label}`}
+            {value || (mode === "edit" ? `Enter ${label}` : "—")}
           </Text>
         )}
-        <Button
-          icon={
-            <Pencil size={14} color={isEditing ? "$colorFocus" : "$color10"} />
-          }
-          chromeless
-          circular
-          size="$2"
-          onPress={() => setIsEditing(!isEditing)}
-          bg={isEditing ? "$backgroundFocus" : "transparent"}
-        />
+        {mode === "edit" && (
+          <Button
+            icon={
+              <Pencil size={14} color={isEditing ? "$colorFocus" : "$color10"} />
+            }
+            chromeless
+            circular
+            size="$2"
+            onPress={() => setIsEditing(!isEditing)}
+            bg={isEditing ? "$backgroundFocus" : "transparent"}
+          />
+        )}
       </XStack>
     </YStack>
   );
@@ -70,11 +74,12 @@ export interface HeaderFieldsHandle {
 
 interface HeaderFieldsProps {
   initialData: Pick<Document, "vendor_name" | "invoice_number">;
+  mode: "edit" | "readonly";
 }
 
 // Export only the main component
 export const HeaderFields = forwardRef<HeaderFieldsHandle, HeaderFieldsProps>(
-  ({ initialData }, ref) => {
+  ({ initialData, mode }, ref) => {
     const [data, setData] = useState(initialData);
 
     useImperativeHandle(ref, () => ({
@@ -98,14 +103,18 @@ export const HeaderFields = forwardRef<HeaderFieldsHandle, HeaderFieldsProps>(
           value={data.vendor_name || "N/A"}
           onChange={(val) => updateField("vendor_name", val)}
           isLarge
+          mode={mode}
         />
         <Separator borderColor="$borderColor" opacity={0.5} />
         <HeaderField
           label="Invoice Number"
           value={data.invoice_number || ""}
           onChange={(val) => updateField("invoice_number", val)}
+          mode={mode}
         />
       </YStack>
     );
   },
 );
+
+HeaderFields.displayName = "HeaderFields";

@@ -1,5 +1,5 @@
 import DocumentDetailVerificationScreen from "@/src/features/verification/screens/DocumentDetailVerification";
 
-export default function VerificationRoute() {
+export default function DocumentVerificationRoute() {
   return <DocumentDetailVerificationScreen />;
 }

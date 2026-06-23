@@ -59,5 +59,8 @@ export default function useStartIngestion() {
       updatePipelineStage(PipelineStage.Retrieving, StageStatus.InProgress);
       return res.data;
     },
+    onError(e) {
+      console.log(JSON.stringify(e));
+    },
   });
 }

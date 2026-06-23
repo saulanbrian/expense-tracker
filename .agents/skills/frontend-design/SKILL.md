@@ -86,9 +86,12 @@ Never output static hexadecimal values or explicit color names. All code must in
 Enforce strict modularity and the Single Responsibility Principle across all UI implementations:
 - **Component Granularity:** Break down complex screens and cards into discrete, readable subcomponents. Each component must have exactly one reason to change.
 - **Orchestration vs. Implementation:** Distinguish between orchestrator components (which manage state and layout of parts) and implementation components (which render specific data fragments).
-- **Subcomponent Locality:**
-    - **Generic UI Primitives:** Components that are truly generic and reusable across *any* domain or feature (e.g., `Button`, `Input`, `Surface`) should remain in `src/components/ui`. These are framework-level abstractions.
-    - **Domain-Specific Reusable Components:** Components that are reusable across multiple features *within the application's domain* but are not generic UI primitives (e.g., `StatusBadge`, `DataField`, `UserAvatar`) should be placed directly in `src/components/`. These components carry more semantic meaning related to the application.
-    - **Local Subcomponents:** If a subcomponent is specific to a single parent component and unlikely to be reused elsewhere, keep it within the same file or a local `components/` folder for that feature to maintain proximity.
+- **Subcomponent Locality:** Follow these component location rules based on reuse scope:
+    - **Screen-Specific Components:** If a component is intended for use **ONLY** within a single screen, define it in a local `components/` directory relative to that screen file: `src/features/[feature_name]/screens/[ScreenName]/components/`.
+    - **Feature-Wide Components:** If a component is intended for use across multiple screens within the same feature, define it in the feature's shared components directory: `src/features/[feature_name]/components/`.
+    - **Domain/Global Components (Generic & Reusable):**
+        - **Generic UI Primitives:** Components that are truly generic and reusable across *any* domain or feature (e.g., `Button`, `Input`, `Surface`) should remain in `src/components/ui`. These are framework-level abstractions.
+        - **Domain-Specific Reusable Components:** Components that are reusable across multiple features *within the application's domain* but are not generic UI primitives (e.g., `StatusBadge`, `DataField`, `UserAvatar`) should be placed directly in `src/components/`. These components carry more semantic meaning related to the application.
 - **Prop-Drilling Avoidance:** Pass only the minimum required data to subcomponents. Prefer passing specific primitive values or specialized interfaces over entire database row objects where possible to reduce coupling.
+- **State Management:** Prefer local state management (e.g., `useState`, `useReducer`) within screen-level orchestrator components for state-heavy UIs. This keeps components "dumb" and reusable by delegating business logic and persistence to the screen orchestrator.
 

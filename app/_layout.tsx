@@ -1,6 +1,6 @@
-import { SplashScreen, Stack } from "expo-router";
-import { TamaguiProvider, YStack } from "tamagui";
-import { useEffect, useState } from "react";
+import { Stack } from "expo-router";
+import { TamaguiProvider } from "tamagui";
+import { useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import config from "@/tamagui.config";
 import { useSupabaseAuth } from "@/src/features/auth/hooks/useSupabaseAuth";
@@ -35,6 +35,7 @@ export default function RootLayout() {
             <Stack.Protected guard={authenticated}>
               <Stack.Screen name="(tabs)" />
               <Stack.Screen name={"camera-scan"} />
+              <Stack.Screen name={"verification"} />
             </Stack.Protected>
           </Stack>
         </TamaguiProvider>

@@ -12,10 +12,7 @@ export default function TabLayout() {
       tabBar={(props) => <TabBar {...props} />}
     >
       <Tabs.Screen name="ingestion" options={{ title: "Ingestion" }} />
-      <Tabs.Screen
-        name="verification"
-        options={{ title: "Verification", headerShown: false }}
-      />
+      <Tabs.Screen name="verification" options={{ title: "Verification" }} />
       <Tabs.Screen name="analytics" options={{ title: "Analytics" }} />
       <Tabs.Screen name="audit-trail" options={{ title: "Audit Trail" }} />
     </Tabs>

@@ -1,5 +1,5 @@
-import { Stack } from "expo-router";
 import StackHeader from "@/src/components/StackHeader";
+import { Stack } from "expo-router";
 
 export default function VerificationLayout() {
   return (
@@ -10,12 +10,6 @@ export default function VerificationLayout() {
         animationDuration: 700,
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: "Verification",
-        }}
-      />
       <Stack.Screen
         name="[id]"
         options={{
