@@ -37,7 +37,7 @@ export default function RootLayout() {
               <Stack.Screen name={"camera-scan"} />
               <Stack.Screen name={"verification"} />
             </Stack.Protected>
-          </Stack>
+            </Stack>
         </TamaguiProvider>
       </ThemeContextProvider>
     </QueryClientProvider>
