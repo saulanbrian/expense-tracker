@@ -1,12 +1,8 @@
-import { BarChart } from "react-native-gifted-charts";
+import { LineChart } from "react-native-gifted-charts";
 import { useMemo } from "react";
 import { YStack, Text, useTheme } from "tamagui";
 import { useGetAnalytics } from "@/src/db/queries/analytics";
-import {
-  aggregateByDay,
-  formatDate,
-  formatYLabel,
-} from "../../utils/analytics";
+import { aggregateByDay, formatDate } from "../../utils/analytics";
 
 export function SpendingChart({ pastDays }: { pastDays?: number }) {
   const { data } = useGetAnalytics(pastDays);
@@ -26,12 +22,19 @@ export function SpendingChart({ pastDays }: { pastDays?: number }) {
   const chartData = useMemo(
     () =>
       dailyTotals.map((d) => ({
-        value: d.total,
+        value: Math.log10(d.total),
         label: formatDate(d.date),
-        frontColor: barColor,
+        originalValue: d.total,
       })),
-    [dailyTotals, barColor],
+    [dailyTotals],
   );
+
+  const formatLogYLabel = (label: string) => {
+    const val = Math.pow(10, parseFloat(label));
+    if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`;
+    if (val >= 1000) return `$${Math.round(val / 1000)}k`;
+    return `$${Math.floor(Math.round(val))}`;
+  };
 
   if (dailyTotals.length === 0) {
     return (
@@ -94,30 +97,54 @@ export function SpendingChart({ pastDays }: { pastDays?: number }) {
         p="$3"
         pb="$0"
       >
-        <BarChart
+        <LineChart
           data={chartData}
           height={220}
-          barWidth={20}
-          spacing={16}
+          spacing={60}
           initialSpacing={12}
-          endSpacing={12}
-          roundedTop
-          isAnimated
-          animationDuration={400}
+          endSpacing={40}
+          color={barColor}
+          thickness={3}
           yAxisThickness={0.5}
           yAxisColor={axisColor}
           xAxisThickness={0.5}
           xAxisColor={axisColor}
           yAxisTextStyle={{ color: labelColor, fontSize: 11 }}
           xAxisLabelTextStyle={{ color: labelColor, fontSize: 10 }}
-          noOfSections={4}
+          noOfSections={6}
+          maxValue={6}
           rulesThickness={0.5}
           rulesColor={axisColor}
           dashWidth={4}
           dashGap={3}
-          yAxisLabelWidth={40}
-          formatYLabel={formatYLabel}
-          showReferenceLine1
+          yAxisLabelWidth={44}
+          formatYLabel={formatLogYLabel}
+          showVerticalLines
+          verticalLinesColor={axisColor}
+          dataPointsColor={barColor}
+          areaChart
+          startFillColor={barColor}
+          endFillColor={barColor}
+          startOpacity={0.3}
+          endOpacity={0.05}
+          showDataPointOnFocus
+          pointerConfig={{
+            pointerLabelComponent: (items: any[]) => {
+              const item = items[0];
+              return (
+                <Text
+                  color="$color12"
+                  fontSize="$2"
+                  fontWeight="600"
+                  width={100}
+                  adjustsFontSizeToFit
+                >
+                  $
+                  {Math.round(item?.originalValue ?? 0).toLocaleString("en-US")}
+                </Text>
+              );
+            },
+          }}
         />
       </YStack>
     </YStack>

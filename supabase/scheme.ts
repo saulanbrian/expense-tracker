@@ -12,11 +12,35 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       document_line_items: {
         Row: {
-          bounding_box: number[]
           created_at: string | null
           description: string
           document_id: string
@@ -28,7 +52,6 @@ export type Database = {
           unit_price: number | null
         }
         Insert: {
-          bounding_box?: number[]
           created_at?: string | null
           description: string
           document_id: string
@@ -40,7 +63,6 @@ export type Database = {
           unit_price?: number | null
         }
         Update: {
-          bounding_box?: number[]
           created_at?: string | null
           description?: string
           document_id?: string
@@ -335,6 +357,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },
