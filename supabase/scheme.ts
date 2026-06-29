@@ -103,6 +103,8 @@ export type Database = {
           total_amount: number | null
           updated_at: string | null
           uploaded_by: string | null
+          usd_conversion_total: number | null
+          usd_rate_as_of_billing_date: number | null
           vendor_name: string | null
         }
         Insert: {
@@ -124,6 +126,8 @@ export type Database = {
           total_amount?: number | null
           updated_at?: string | null
           uploaded_by?: string | null
+          usd_conversion_total?: number | null
+          usd_rate_as_of_billing_date?: number | null
           vendor_name?: string | null
         }
         Update: {
@@ -145,6 +149,8 @@ export type Database = {
           total_amount?: number | null
           updated_at?: string | null
           uploaded_by?: string | null
+          usd_conversion_total?: number | null
+          usd_rate_as_of_billing_date?: number | null
           vendor_name?: string | null
         }
         Relationships: [

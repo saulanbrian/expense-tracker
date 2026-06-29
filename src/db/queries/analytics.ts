@@ -4,7 +4,7 @@ import { supabase } from "@/supabase/client";
 
 type AnalyticsDocument = Pick<
   DocumentSchema,
-  "currency" | "invoice_date" | "total_amount"
+  "currency" | "invoice_date" | "total_amount" | "usd_conversion_total"
 >;
 
 export const useGetAnalytics = (pastDays?: number) => {

@@ -29,18 +29,18 @@ export type DailyTotal = {
   total: number;
 };
 
-/** Groups documents by invoice date and sums total_amount per day.
- *  Filters out items missing invoice_date or total_amount.
+/** Groups documents by invoice date and sums usd_conversion_total per day.
+ *  Skips items where usd_conversion_total is null.
  *  Returns results sorted chronologically. */
 export function aggregateByDay(
-  items: Pick<DocumentSchema, "invoice_date" | "total_amount">[],
+  items: Pick<DocumentSchema, "invoice_date" | "usd_conversion_total">[],
 ): DailyTotal[] {
   const map = new Map<string, number>();
 
   for (const item of items) {
-    if (!item.invoice_date || item.total_amount == null) continue;
+    if (!item.invoice_date || item.usd_conversion_total == null) continue;
     const day = item.invoice_date.split("T")[0];
-    map.set(day, (map.get(day) ?? 0) + item.total_amount);
+    map.set(day, (map.get(day) ?? 0) + item.usd_conversion_total);
   }
 
   return Array.from(map.entries())
