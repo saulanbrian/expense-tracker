@@ -2,9 +2,13 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { DocumentSchema } from "../types";
 import { supabase } from "@/supabase/client";
 
-type AnalyticsDocument = Pick<
+export type AnalyticsDocument = Pick<
   DocumentSchema,
-  "currency" | "invoice_date" | "total_amount" | "usd_conversion_total"
+  | "currency"
+  | "invoice_date"
+  | "total_amount"
+  | "usd_conversion_total"
+  | "vendor_name"
 >;
 
 export const useGetAnalytics = (pastDays?: number) => {

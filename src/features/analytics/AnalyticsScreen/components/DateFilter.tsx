@@ -25,7 +25,7 @@ function DateFilter({ value, onChange }: DateFilterProps) {
             rounded="$4"
             theme={active ? "accent" : undefined}
             bg={active ? undefined : "$color4"}
-            pressStyle={{ opacity: 0.8 }}
+            pressStyle={{ scale: 0.96 }}
             onPress={() => onChange(option.value)}
           >
             <Text

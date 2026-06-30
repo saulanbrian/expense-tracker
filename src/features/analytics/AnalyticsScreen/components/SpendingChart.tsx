@@ -1,12 +1,16 @@
 import { LineChart } from "react-native-gifted-charts";
-import { useMemo } from "react";
-import { YStack, Text, useTheme } from "tamagui";
-import { useGetAnalytics } from "@/src/db/queries/analytics";
+import { useMemo, useState } from "react";
+import { Button, XStack, YStack, Text, useTheme } from "tamagui";
+import type { AnalyticsDocument } from "@/src/db/queries/analytics";
 import { aggregateByDay, formatDate } from "../../utils/analytics";
 
-export function SpendingChart({ pastDays }: { pastDays?: number }) {
-  const { data } = useGetAnalytics(pastDays);
+type SpendingChartProps = {
+  data: AnalyticsDocument[];
+};
+
+export function SpendingChart({ data }: SpendingChartProps) {
   const theme = useTheme();
+  const [labelMode, setLabelMode] = useState(false);
 
   const dailyTotals = useMemo(() => aggregateByDay(data ?? []), [data]);
 
@@ -25,8 +29,13 @@ export function SpendingChart({ pastDays }: { pastDays?: number }) {
         value: Math.log10(d.total),
         label: formatDate(d.date),
         originalValue: d.total,
+        ...(labelMode
+          ? {
+              dataPointText: `$${Math.round(d.total).toLocaleString("en-US")}`,
+            }
+          : {}),
       })),
-    [dailyTotals],
+    [dailyTotals, labelMode],
   );
 
   const formatLogYLabel = (label: string) => {
@@ -62,17 +71,29 @@ export function SpendingChart({ pastDays }: { pastDays?: number }) {
   }
 
   return (
-    <YStack gap="$3" flex={1}>
-      <YStack px="$4" gap="$1">
-        <Text
-          color="$color10"
-          fontSize="$2"
-          fontWeight="600"
-          textTransform="uppercase"
-          letterSpacing={1}
-        >
-          Total Spending
-        </Text>
+    <YStack gap="$3">
+      <YStack px="$2" gap="$1">
+        <XStack items="center" justify="space-between">
+          <Text
+            color="$color10"
+            fontSize="$2"
+            fontWeight="600"
+            textTransform="uppercase"
+            letterSpacing={1}
+          >
+            Total Spending
+          </Text>
+          <Button
+            size="$2"
+            onPress={() => setLabelMode((p) => !p)}
+            bg={labelMode ? "$color8" : "$color3"}
+            borderWidth={0.5}
+            borderColor="$borderColor"
+            pressStyle={{ scale: 0.96 }}
+          >
+            {labelMode ? "Labels On" : "Labels Off"}
+          </Button>
+        </XStack>
         <Text
           color="$color12"
           fontSize="$8"
@@ -88,64 +109,57 @@ export function SpendingChart({ pastDays }: { pastDays?: number }) {
         </Text>
       </YStack>
 
-      <YStack
-        mx="$4"
-        bg="$color3"
-        rounded="$4"
-        borderWidth={0.5}
-        borderColor="$borderColor"
-        p="$3"
-        pb="$0"
-      >
-        <LineChart
-          data={chartData}
-          height={220}
-          spacing={60}
-          initialSpacing={12}
-          endSpacing={40}
-          color={barColor}
-          thickness={3}
-          yAxisThickness={0.5}
-          yAxisColor={axisColor}
-          xAxisThickness={0.5}
-          xAxisColor={axisColor}
-          yAxisTextStyle={{ color: labelColor, fontSize: 11 }}
-          xAxisLabelTextStyle={{ color: labelColor, fontSize: 10 }}
-          noOfSections={6}
-          maxValue={6}
-          rulesThickness={0.5}
-          rulesColor={axisColor}
-          dashWidth={4}
-          dashGap={3}
-          yAxisLabelWidth={44}
-          formatYLabel={formatLogYLabel}
-          showVerticalLines
-          verticalLinesColor={axisColor}
-          dataPointsColor={barColor}
-          areaChart
-          startFillColor={barColor}
-          endFillColor={barColor}
-          startOpacity={0.3}
-          endOpacity={0.05}
-          showDataPointOnFocus
-          pointerConfig={{
-            pointerLabelComponent: (items: any[]) => {
-              const item = items[0];
-              return (
-                <Text
-                  color="$color12"
-                  fontSize="$2"
-                  fontWeight="600"
-                  width={100}
-                  adjustsFontSizeToFit
-                >
-                  $
-                  {Math.round(item?.originalValue ?? 0).toLocaleString("en-US")}
-                </Text>
-              );
-            },
-          }}
-        />
+      <YStack px="$2">
+        <YStack
+          bg="$color3"
+          rounded="$4"
+          borderWidth={0.5}
+          borderColor="$borderColor"
+          p="$3"
+          pb="$0"
+        >
+          <LineChart
+            data={chartData}
+            height={220}
+            spacing={60}
+            initialSpacing={12}
+            animateOnDataChange
+            animationDuration={400}
+            endSpacing={40}
+            color={barColor}
+            thickness={3}
+            yAxisThickness={0.5}
+            yAxisColor={axisColor}
+            xAxisThickness={0.5}
+            xAxisColor={axisColor}
+            yAxisTextStyle={{ color: labelColor, fontSize: 11 }}
+            xAxisLabelTextStyle={{ color: labelColor, fontSize: 10 }}
+            noOfSections={6}
+            maxValue={6}
+            rulesThickness={0.5}
+            rulesColor={axisColor}
+            dashWidth={4}
+            dashGap={3}
+            yAxisLabelWidth={44}
+            formatYLabel={formatLogYLabel}
+            showVerticalLines
+            verticalLinesColor={axisColor}
+            dataPointsColor={barColor}
+            areaChart
+            startFillColor={barColor}
+            endFillColor={barColor}
+            startOpacity={0.3}
+            endOpacity={0.05}
+            showScrollIndicator
+            {...(labelMode
+              ? {
+                  textColor: theme.color12?.val ?? "#fff",
+                  textFontSize: 10,
+                  textShiftY: -8,
+                }
+              : {})}
+          />
+        </YStack>
       </YStack>
     </YStack>
   );
